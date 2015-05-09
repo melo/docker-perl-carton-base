@@ -60,3 +60,9 @@ That's all it takes...
 Just clone this repo, tweak it, and:
 
     docker build -t your_name/perl-carton-base .
+
+
+## Author
+
+Pedro Melo, <melo@simplicidade.org>
+
