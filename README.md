@@ -19,8 +19,9 @@ Also, to make the use of this image as a source easier, we also setup
 Docker "on build" hooks to add the usual three steps that all Perl
 applications would need:
 
-* we copy the `cpanfile` file from the root of your project, and run
-  `carton install`, to make sure your dependencies are installed;
+* we copy `cpanfile` and `cpanfile.snapshot` files from the root of your
+  project, and run `carton install --deploymeny`, to make sure your
+  dependencies are installed;
 * then copy all the files from your project into the `/app` directory;
 * and we force whatever you put in `CMD` on your own app Dockerfile to
   run under `carton exec`, to make sure your app automagically finds the

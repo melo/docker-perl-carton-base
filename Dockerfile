@@ -9,8 +9,8 @@ WORKDIR /app
 USER app
 
 ## Install you app dependencies
-ONBUILD COPY cpanfile /app
-ONBUILD RUN carton install
+ONBUILD COPY cpanfile cpanfile.snapshot /app
+ONBUILD RUN carton install --deployment
 
 ## Copy your app files
 ONBUILD COPY . /app
