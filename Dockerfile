@@ -18,4 +18,4 @@ ONBUILD RUN carton install --deployment && rm -rf /app/local/cache "$HOME/.cpanm
 ONBUILD COPY . /app
 
 ## We execute our app under Carton
-ONBUILD ENTRYPOINT ["carton", "exec"]
+ONBUILD ENTRYPOINT ["carton", "exec", "--"]
