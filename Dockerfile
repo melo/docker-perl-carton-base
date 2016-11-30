@@ -8,7 +8,7 @@ RUN apt-get update -y \
     && cpanm -q -n Carton \
     && /usr/sbin/useradd -m -d /app -s /bin/nologin -U app \
     && apt-get clean autoclean \
-    && apt-get autoremove -y
+    && apt-get autoremove -y \
     && chmod 555 /usr/sbin/run-docker-build-hook
 
 ### Our build process
