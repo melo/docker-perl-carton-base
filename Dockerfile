@@ -14,8 +14,8 @@ RUN apt-get update -y \
 ### Our build process
 
 ## Init the hook system
-ONBUILD COPY .docker-build-hooks/* /app
-ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook after-init-hooks
+ONBUILD COPY .docker-build-hooks/ /app/.docker-build-hooks/
+ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook after-init-hooks && chown -R app:app /app
 
 ## Run our apps as 'app' user
 ONBUILD USER app
