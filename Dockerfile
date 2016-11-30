@@ -30,8 +30,7 @@ ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks
 ## Install you app dependencies
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-dependencies-install
 ONBUILD COPY cpanfile cpanfile.snapshot /app/
-ONBUILD RUN chown -R app:app . \
-            && carton install --deployment \
+ONBUILD RUN carton install --deployment \
             && rm -rf ./local/cache "$HOME/.cpanm"
 ONBUILD RUN /usr/sbin/run-docker-build-hook after-dependencies-install
 
