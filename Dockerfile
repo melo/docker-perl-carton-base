@@ -4,7 +4,9 @@ MAINTAINER Pedro Melo <melo@simplicidade.org>
 ## Bootstrap what we need
 RUN apt-get update -y \
     && cpanm -q -n Carton \
-    && /usr/sbin/useradd -m -d /app -s /bin/nologin -U app
+    && /usr/sbin/useradd -m -d /app -s /bin/nologin -U app \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y
 WORKDIR /app
 USER app
 
