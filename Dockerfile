@@ -6,6 +6,7 @@ WORKDIR /app
 COPY run-docker-build-hook /usr/sbin
 RUN apt-get update -y \
     && cpanm -q -n Carton \
+    && rm -rf "$HOME/.cpanm" \
     && /usr/sbin/useradd -m -d /app -s /bin/nologin -U app \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
