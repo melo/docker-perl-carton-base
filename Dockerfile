@@ -10,7 +10,7 @@ USER app
 
 ## Install you app dependencies
 ONBUILD COPY cpanfile cpanfile.snapshot /app
-ONBUILD RUN carton install --deployment
+ONBUILD RUN carton install --deployment && rm -rf /app/local/cache "$HOME/.cpanm"
 
 ## Copy your app files
 ONBUILD COPY . /app
