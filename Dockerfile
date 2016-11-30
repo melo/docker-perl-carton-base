@@ -25,15 +25,17 @@ ENTRYPOINT ["carton", "exec", "--"]
 
 ## Init the hook system
 ONBUILD COPY .docker-build-hooks/ /app/.docker-build-hooks/
-ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook after-init-hooks && chown -R app:app /app
+ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks
 
 ## Install you app dependencies
-ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook before-dependencies-install
+ONBUILD RUN /usr/sbin/run-docker-build-hook before-dependencies-install
 ONBUILD COPY cpanfile cpanfile.snapshot /app/
-ONBUILD RUN carton install --deployment && rm -rf /app/local/cache "$HOME/.cpanm"
-ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook after-dependencies-install
+ONBUILD RUN chown -R app:app . \
+            && carton install --deployment \
+            && rm -rf ./local/cache "$HOME/.cpanm"
+ONBUILD RUN /usr/sbin/run-docker-build-hook after-dependencies-install
 
 ## Copy your app files
-ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook before-app-copy
+ONBUILD RUN /usr/sbin/run-docker-build-hook before-app-copy
 ONBUILD COPY . /app
-ONBUILD RUN cd /app && /usr/sbin/run-docker-build-hook after-app-copy
+ONBUILD RUN /usr/sbin/run-docker-build-hook after-app-copy
