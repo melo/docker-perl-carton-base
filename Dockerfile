@@ -14,7 +14,6 @@ RUN apt-get update -y \
 
 ## Sane/safe defaults
 WORKDIR /app
-USER app
 
 
 ## We execute our app under Carton
@@ -25,7 +24,10 @@ ENTRYPOINT ["carton", "exec", "--"]
 
 ## Init the hook system
 ONBUILD COPY .docker-build-hooks/ /app/.docker-build-hooks/
-ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks
+ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks && chown -R app:app .
+
+## From this point on, we run as 'app'
+ONBUILD USER app
 
 ## Install you app dependencies
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-dependencies-install
