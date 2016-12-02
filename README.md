@@ -55,8 +55,10 @@ The build process will make sure that:
   the second file) are installed under `/app/local`;
 * your application is copied to the container under `/app`;
 * the workdir is set to `/app` and and all commands run as `app`;
-* all commands you execute with `docker run` are executed with
-  `carton exec` to make sure your environment is sane.
+* all commands you execute with `docker run` are executed within `carton
+  exec` to make sure your environment is sane, and PERL5LIB will include
+  `/app/lib`, which allows you to just use your own application modules
+  directly without futzing with `FindBin`.
 
 More details below in the "Inside the box" section.
 

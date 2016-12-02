@@ -16,6 +16,10 @@ RUN apt-get update -y \
 WORKDIR /app
 
 
+## Make application lib's available out-of-the-box
+ENV PERL5LIB /app/lib
+
+
 ## We execute our app under Carton
 ENTRYPOINT ["carton", "exec", "--"]
 
