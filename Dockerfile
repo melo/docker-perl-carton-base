@@ -2,7 +2,7 @@ FROM perl
 MAINTAINER Pedro Melo <melo@simplicidade.org>
 
 ## Bootstrap what we need
-COPY run-docker-build-hook /usr/sbin
+COPY perl5lib-exec-wrapper run-docker-build-hook /usr/sbin
 RUN apt-get update -y \
     && cpanm -q -n Carton \
     && rm -rf "$HOME/.cpanm" \
@@ -16,12 +16,9 @@ RUN apt-get update -y \
 WORKDIR /app
 
 
-## Make application lib's available out-of-the-box
-ENV PERL5LIB /app/lib
-
-
 ## We execute our app under Carton
-ENTRYPOINT ["carton", "exec", "--"]
+## ... making sure project lib is available out-of-the-box
+ENTRYPOINT ["carton", "exec", "--", "/usr/sbin/perl5lib-exec-wrapper", ]
 
 
 ### Our build process

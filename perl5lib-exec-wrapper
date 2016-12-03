@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# Futzes PERL5LIB to include the project lib
+#
+
+project_lib="`pwd`/lib"
+if [ -d "$project_lib" ] ; then
+  PERL5LIB="$project_lib:$PERL5LIB"
+  export PERL5LIB
+fi
+
+exec "$@"
