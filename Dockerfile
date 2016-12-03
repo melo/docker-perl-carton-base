@@ -2,7 +2,7 @@ FROM perl
 MAINTAINER Pedro Melo <melo@simplicidade.org>
 
 ## Bootstrap what we need
-COPY perl5lib-exec-wrapper run-docker-build-hook /usr/sbin
+COPY perl5lib-exec-wrapper run-docker-build-hook /usr/sbin/
 RUN apt-get update -y \
     && cpanm -q -n Carton \
     && rm -rf "$HOME/.cpanm" \
