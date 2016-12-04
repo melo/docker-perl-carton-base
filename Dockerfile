@@ -18,7 +18,7 @@ WORKDIR /app
 
 ## We execute our app under Carton
 ## ... making sure project lib is available out-of-the-box
-ENTRYPOINT ["carton", "exec", "--", "/usr/sbin/perl5lib-exec-wrapper", ]
+ENTRYPOINT [ "carton", "exec", "--", "/usr/sbin/perl5lib-exec-wrapper" ]
 
 
 ### Our build process
