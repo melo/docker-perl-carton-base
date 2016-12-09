@@ -2,7 +2,7 @@ FROM perl
 MAINTAINER Pedro Melo <melo@simplicidade.org>
 
 ## Bootstrap what we need
-COPY perl5lib-exec-wrapper run-docker-build-hook /usr/sbin/
+COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook /usr/sbin/
 RUN apt-get update -y \
     && cpanm -q -n Carton \
     && rm -rf "$HOME/.cpanm" \
@@ -24,7 +24,6 @@ ENV APP_PERL5LIB /app/lib
 ## Define entrypoint and post-Carton-exed script The post-exec script is
 ## needed to fix some ENV's that don't survive carton exec, like
 ## PERl5LIB
-COPY base-entrypoint.sh base-post-carton-exec-fix.sh /usr/sbin/
 ENTRYPOINT ["/usr/sbin/base-entrypoint.sh"]
 ENV BASE_ENTRYPOINT "/usr/sbin/base-entrypoint.sh"
 ENV BASE_POST_CARTON_EXEC "/usr/sbin/base-post-carton-exec-fix.sh"
