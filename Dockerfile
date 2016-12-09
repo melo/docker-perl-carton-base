@@ -14,11 +14,20 @@ RUN apt-get update -y \
 
 ## Sane/safe defaults
 WORKDIR /app
+ENV APP_HOMEDIR  /app
+
+## Make application lib's available out-of-the-box
+## This requires the special post-entrypoint fix script below
+ENV APP_PERL5LIB /app/lib
 
 
-## We execute our app under Carton
-## ... making sure project lib is available out-of-the-box
-ENTRYPOINT [ "carton", "exec", "--", "/usr/sbin/perl5lib-exec-wrapper" ]
+## Define entrypoint and post-Carton-exed script The post-exec script is
+## needed to fix some ENV's that don't survive carton exec, like
+## PERl5LIB
+COPY base-entrypoint.sh base-post-carton-exec-fix.sh /usr/sbin/
+ENTRYPOINT ["/usr/sbin/base-entrypoint.sh"]
+ENV BASE_ENTRYPOINT "/usr/sbin/base-entrypoint.sh"
+ENV BASE_POST_CARTON_EXEC "/usr/sbin/base-post-carton-exec-fix.sh"
 
 
 ### Our build process
