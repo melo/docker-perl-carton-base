@@ -38,7 +38,8 @@ Create a Dockerfile for your project with just this content:
 You also need to create an empty folder for the hooks, even if you don't
 use them. On your project, do:
 
-    mkdir .docker-build-hooks touch .docker-build-hooks/.keep
+    mkdir .docker-build-hooks
+    touch .docker-build-hooks/.keep
 
 You should commit the `Dockerfile` and `.docker-build-hooks/.keep` files
 to your repository.
