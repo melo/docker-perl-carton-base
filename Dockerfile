@@ -2,14 +2,14 @@ FROM perl
 MAINTAINER Pedro Melo <melo@simplicidade.org>
 
 ## Bootstrap what we need
-COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook /usr/sbin/
+COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook carton_install.sh /usr/sbin/
 RUN apt-get update -y \
     && cpanm -q -n Carton \
     && rm -rf "$HOME/.cpanm" \
     && /usr/sbin/useradd -m -d /app -s /bin/nologin -U app \
     && apt-get clean autoclean \
     && apt-get autoremove -y \
-    && chmod 555 /usr/sbin/run-docker-build-hook
+    && chmod 555 /usr/sbin/run-docker-build-hook /usr/sbin/carton_install.sh
 
 
 ## Sane/safe defaults
@@ -41,7 +41,7 @@ ONBUILD USER app
 ## Install you app dependencies
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-dependencies-install
 ONBUILD COPY cpanfile cpanfile.snapshot /app/
-ONBUILD RUN carton install --deployment \
+ONBUILD RUN /usr/sbin/carton_install.sh \
             && rm -rf ./local/cache "$HOME/.cpanm"
 ONBUILD RUN /usr/sbin/run-docker-build-hook after-dependencies-install
 
