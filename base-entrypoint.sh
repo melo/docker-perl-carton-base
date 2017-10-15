@@ -11,9 +11,10 @@ if [ -z "$SKIP_DEPS_SETUP" -a -z "$CYCLE_DEPS_SETUP" ] ; then
   mv /app/deps/local "$APP_HOMEDIR/"
 fi
 
-if [ -e "$APP_HOMEDIR/.entrypoint.sh" -a "$BASE_SKIP_LOCAL_ENTRYPOINT" != "yes" ] ; then
-  BASE_SKIP_LOCAL_ENTRYPOINT=yes
-  export BASE_SKIP_LOCAL_ENTRYPOINT
+if [ -e "$APP_HOMEDIR/.entrypoint.sh" -a -z "$CYCLE_LOCAL_ENTRYPOINT" ] ; then
+  CYCLE_LOCAL_ENTRYPOINT=done
+  export CYCLE_LOCAL_ENTRYPOINT
+
   exec "$APP_HOMEDIR/.entrypoint.sh" "$@"
 fi
 
