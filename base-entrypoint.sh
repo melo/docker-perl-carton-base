@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # The two CYCLE_* environment variables exist to avoid running the code
 # twice in case the local .entrypoint.sh script exec's this script again.
 

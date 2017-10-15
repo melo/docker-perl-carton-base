@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 carton install --deployment
 if [ $? == 0 ] ; then
   rm -rf ./local/cache "$HOME/.cpanm"
