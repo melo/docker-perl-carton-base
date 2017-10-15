@@ -1,6 +1,12 @@
 #!/bin/sh
 
-carton install --deployment && exit 0
+carton install --deployment
+if [ $? == 0 ] ; then
+  rm -rf ./local/cache "$HOME/.cpanm"
+  mkdir -p /app/deps
+  mv local /app/deps
+  exit 0
+fi
 
 carton install --deployment
 if [ $? != 0 ] ; then
