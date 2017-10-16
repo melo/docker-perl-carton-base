@@ -9,7 +9,9 @@ if [ -z "$SKIP_DEPS_SETUP" -a -z "$CYCLE_DEPS_SETUP" ] ; then
   CYCLE_DEPS_SETUP=done
   export CYCLE_DEPS_SETUP
 
-  mv "$APP_HOMEDIR/local" "$APP_HOMEDIR/local.`date '+%Y%m%d%H%M%S'`"
+  if [ -e "$APP_HOMEDIR/local" ] ; then
+    mv "$APP_HOMEDIR/local" "$APP_HOMEDIR/local.`date '+%Y%m%d%H%M%S'`"
+  fi
   ln -s /deps/local "$APP_HOMEDIR/local"
 fi
 
