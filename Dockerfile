@@ -13,7 +13,7 @@ RUN apt-get update -y \
 COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook carton_install.sh /usr/sbin/
 RUN  chmod 555 /usr/sbin/run-docker-build-hook /usr/sbin/carton_install.sh
 
-## Sane/safe defaults
+## Saner/safer defaults
 WORKDIR /app
 ENV APP_HOMEDIR  /app
 
