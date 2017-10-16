@@ -34,19 +34,19 @@ ENV BASE_POST_CARTON_EXEC "/usr/sbin/base-post-carton-exec-fix.sh"
 
 ## Init the hook system
 ONBUILD COPY .docker-build-hooks/ /app/.docker-build-hooks/
-ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks && chown -R app:app .
-
-## From this point on, we run as 'app'
-ONBUILD USER app
+ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks
 
 ## Install you app dependencies
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-dependencies-install
 ONBUILD COPY cpanfile cpanfile.snapshot /app/
 ONBUILD RUN /usr/sbin/carton_install.sh \
-            && rm -rf ./local/cache "$HOME/.cpanm"
-ONBUILD RUN /usr/sbin/run-docker-build-hook after-dependencies-install
+            && /usr/sbin/run-docker-build-hook after-dependencies-install
 
 ## Copy your app files
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-app-copy
 ONBUILD COPY . /app
-ONBUILD RUN /usr/sbin/run-docker-build-hook after-app-copy
+ONBUILD RUN /usr/sbin/run-docker-build-hook after-app-copy \
+            && chown -R app:app .
+
+## From this point on, we run as 'app'
+ONBUILD USER app
