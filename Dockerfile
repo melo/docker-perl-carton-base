@@ -2,15 +2,16 @@ FROM perl
 MAINTAINER Pedro Melo <melo@simplicidade.org>
 
 ## Bootstrap what we need
-COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook carton_install.sh /usr/sbin/
 RUN apt-get update -y \
     && cpanm -q -n Carton \
     && rm -rf "$HOME/.cpanm" \
     && /usr/sbin/useradd -m -d /app -s /bin/nologin -U app \
     && apt-get clean autoclean \
-    && apt-get autoremove -y \
-    && chmod 555 /usr/sbin/run-docker-build-hook /usr/sbin/carton_install.sh
+    && apt-get autoremove -y
 
+## Copy our magic scripts
+COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook carton_install.sh /usr/sbin/
+RUN  chmod 555 /usr/sbin/run-docker-build-hook /usr/sbin/carton_install.sh
 
 ## Sane/safe defaults
 WORKDIR /app
