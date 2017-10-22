@@ -46,7 +46,7 @@ ONBUILD RUN /usr/sbin/carton_install.sh \
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-app-copy
 ONBUILD COPY . /app
 ONBUILD RUN /usr/sbin/run-docker-build-hook after-app-copy \
-            && chown -R app:app .
+            && chown app:app .
 
 ## From this point on, we run as 'app'
 ONBUILD USER app
