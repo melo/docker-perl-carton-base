@@ -7,6 +7,7 @@ if [ $? == 0 ] ; then
   rm -rf ./local/cache "$HOME/.cpanm" .carton.log
   mkdir -p /deps
   mv local /deps
+  chown -R app:app /deps
   exit 0
 fi
 
