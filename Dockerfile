@@ -31,6 +31,10 @@ ENV BASE_DEPS       "/deps/local"
 ENV BASE_PERL5LIB   "$BASE_DEPS/lib/perl5"
 
 
+## Set a decent default CMD... Each person will override it to taste, I'm sure.
+CMD ["/bin/bash"]
+
+
 ### Our build process
 
 ## Init the hook system
