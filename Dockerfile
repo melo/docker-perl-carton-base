@@ -10,36 +10,37 @@ RUN apt-get update -y \
     && apt-get autoremove -y
 
 ## Copy our magic scripts
-COPY base-entrypoint.sh base-post-carton-exec-fix.sh run-docker-build-hook carton_install.sh /usr/sbin/
-RUN  chmod 555 /usr/sbin/run-docker-build-hook /usr/sbin/carton_install.sh
+COPY base-entrypoint run-docker-build-hook install-deps /usr/sbin/
+RUN  chmod 555                         \
+       /usr/sbin/base-entrypoint       \
+       /usr/sbin/run-docker-build-hook \
+       /usr/sbin/install-deps 
 
 ## Saner/safer defaults
 WORKDIR /app
 ENV APP_HOMEDIR  /app
 
 ## Make application lib's available out-of-the-box
-## This requires the special post-entrypoint fix script below
-ENV APP_PERL5LIB /app/lib
+## This requires the entrypoint script below
+ENV APP_PERL5LIB  /app/lib
 
-
-## Define entrypoint and post-Carton-exed script The post-exec script is
-## needed to fix some ENV's that don't survive carton exec, like
-## PERl5LIB
-ENTRYPOINT ["/usr/sbin/base-entrypoint.sh"]
-ENV BASE_ENTRYPOINT "/usr/sbin/base-entrypoint.sh"
-ENV BASE_POST_CARTON_EXEC "/usr/sbin/base-post-carton-exec-fix.sh"
+## Define entrypoint
+ENTRYPOINT ["/usr/sbin/base-entrypoint"]
+ENV BASE_ENTRYPOINT "/usr/sbin/base-entrypoint"
+ENV BASE_DEPS       "/deps/local"
+ENV BASE_PERL5LIB   "$BASE_DEPS/lib/perl5"
 
 
 ### Our build process
 
 ## Init the hook system
-ONBUILD COPY .docker-build-hooks/ /app/.docker-build-hooks/
+ONBUILD COPY .docker-build-hooks/ /build/.docker-build-hooks/
 ONBUILD RUN /usr/sbin/run-docker-build-hook after-init-hooks
 
 ## Install you app dependencies
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-dependencies-install
-ONBUILD COPY cpanfile cpanfile.snapshot /app/
-ONBUILD RUN /usr/sbin/carton_install.sh \
+ONBUILD COPY cpanfile cpanfile.snapshot /deps/
+ONBUILD RUN /usr/sbin/install-deps \
             && /usr/sbin/run-docker-build-hook after-dependencies-install
 
 ## Copy your app files

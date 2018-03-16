@@ -1,0 +1,43 @@
+#!/bin/bash
+
+set -e
+
+cd /deps
+
+## Update with the latest cpanfile and cpanfile.snapshot files
+## This allows you to keep updating the local docker enviroment
+## during development, just run this script again
+if [ -e /app/cpanfile ] ; then
+  rm cpanfile*
+  cp /app/cpanfile* .
+fi
+
+
+## Install the deps, and hopefuly all will work out
+carton install --deployment 2>&1 | tee .carton.log
+if [ $? == 0 ] ; then
+  rm -rf ./local/cache "$HOME/.cpanm" .carton.log
+
+  ## We make sure all is owned by app so that we can run it again later, during
+  ## development
+  chown -R app:app . 
+  exit 0
+fi
+
+
+## Ok, carton install failed, run it again with logs and dump a summary of the
+## relevant parts
+carton install --deployment
+if [ $? != 0 ] ; then
+  echo "***** BEGIN original carton install log (without the 'Successfully installed' lines)"
+  egrep -v "^Successfully installed " .carton.log | grep -v "/bin/tar: Ignoring unknown extended header keyword"
+  echo "******"
+
+  echo "***** BEGIN build.log"
+  cat $HOME/.cpanm/build.log
+  echo "******"
+
+  echo "****** carton install failed, search log backwards until 'BEGIN original' and debug it"
+  echo "******"
+  exit 1
+fi

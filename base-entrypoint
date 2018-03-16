@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+# The CYCLE_* environment variable exist to avoid running the code
+# twice in case the local .entrypoint.sh script exec's this script again.
+if [ -z "$CYCLE_ENTRYPOINT" ] ; then
+  CYCLE_ENTRYPOINT=done
+  export CYCLE_ENTRYPOINT
+
+
+  # Setup PERL5LIB and PATH to use our deps and our app lib if it exists
+  PERL5LIB="$BASE_PERL5LIB"
+  PATH="$BASE_DEPS/bin:$PATH"
+
+  if [ -n "$APP_PERL5LIB" -a -d "$APP_PERL5LIB" ] ; then
+    PERL5LIB="$APP_PERL5LIB:$PERL5LIB"
+  fi
+
+  export PERL5LIB PATH
+
+
+  # Support local entrypoint override per app
+  if [ -x "$APP_HOMEDIR/.entrypoint.sh" ] ; then
+    exec "$APP_HOMEDIR/.entrypoint.sh" "$@"
+  fi
+fi
+
+exec "$@"
