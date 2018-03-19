@@ -7,7 +7,8 @@ cd /deps
 ## Update with the latest cpanfile and cpanfile.snapshot files
 ## This allows you to keep updating the local docker enviroment
 ## during development, just run this script again
-if [ -e /app/cpanfile ] ; then
+if [ -z "$SKIP_REFRESH" -a -e /app/cpanfile ] ; then
+  echo "... refreshing cpanfile* from app"
   rm cpanfile*
   cp /app/cpanfile* .
 fi
