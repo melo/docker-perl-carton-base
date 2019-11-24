@@ -1,3 +1,8 @@
+# NOTE: Deprecated #
+
+This image is deprecated. I no longer use it. Currently, for all my Perl-based projects, I'm using the [melopt/perl-alt](https://hub.docker.com/r/melopt/perl-alt) image.
+
+
 # Perl base image for Docker #
 
 [![](https://images.microbadger.com/badges/image/melopt/perl-carton-base.svg)](https://microbadger.com/images/melopt/perl-carton-base "Get your own image badge on microbadger.com")
