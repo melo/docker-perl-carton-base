@@ -51,7 +51,7 @@ ONBUILD RUN /usr/sbin/install-deps \
 ONBUILD RUN /usr/sbin/run-docker-build-hook before-app-copy
 ONBUILD COPY . /app
 ONBUILD RUN /usr/sbin/run-docker-build-hook after-app-copy \
-            && chown app:app .
+            && chown -R app:app .
 
 ## From this point on, we run as 'app'
 ONBUILD USER app
